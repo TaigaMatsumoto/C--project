@@ -70,7 +70,7 @@ namespace Yahtzee_Game
 
             for (int i = 0; i < testNames.Length; i++)
             {
-                players.Add(new Player(testNames[i], scoreLabels[i]));
+                players.Add(new Player(testNames[i], scoreLabels));
             }
         }
        

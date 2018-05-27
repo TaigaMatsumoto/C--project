@@ -10,7 +10,7 @@ namespace Yahtzee_Game
 {
     public class Die
     {
-
+        
         private int faceValue;
         private bool active = true;
         private Label label;
