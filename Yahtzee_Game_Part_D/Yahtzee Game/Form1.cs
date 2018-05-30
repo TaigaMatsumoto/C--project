@@ -127,6 +127,7 @@ namespace Yahtzee_Game
 
         private void rollDice_button_Click(object sender, EventArgs e)
         {
+            numericUpDown1.Enabled = false;
             game.RollDice();
             EnableCheckBoxes();
             foreach (Button button in scoreButtons)
@@ -155,9 +156,10 @@ namespace Yahtzee_Game
 
         private void ScoreButton_Click(object sender, EventArgs e)
         {
-            Button btn = (Button)sender;
-            int index = Array.IndexOf(scoreButtons, btn.Name);
+            //Button btn = (Button)sender;
+            int index = Array.IndexOf(scoreButtons, (Button)sender);
             game.ScoreCombination((ScoreType)index);
+            DisableRollButton();
             ShowOkButton();
         }
 
@@ -165,6 +167,7 @@ namespace Yahtzee_Game
         {
             StartNewGame();
             EnableRollButton();
+            numericUpDown1.Enabled = true;
             message_label.Text = "Roll 1";
             playerName_label.Text = "Player 1";
         }
@@ -172,6 +175,7 @@ namespace Yahtzee_Game
         private void ok_Button_Click(object sender, EventArgs e)
         {
             game.NextTurn();
+           
         }
 
         private void UpdatePlayersDataGridView()
@@ -183,7 +187,7 @@ namespace Yahtzee_Game
         {
             if(numericUpDown1.Value > currentValue)
             {
-                game.Players.Add(new Player(playerName + numericUpDown1.Value.ToString(), scoreTotals));
+                game.Players.Add(new Player(playerName + " " + numericUpDown1.Value.ToString(), scoreTotals));
                 currentValue = numericUpDown1.Value;
             }
             else
@@ -191,6 +195,14 @@ namespace Yahtzee_Game
                 game.Players.RemoveAt(Decimal.ToInt32(numericUpDown1.Value));
                 currentValue = numericUpDown1.Value;
             }
+            //if(numericUpDown1.Value < 1)
+            //{
+            //    numericUpDown1.Value = 1;
+            //}
+            //if (numericUpDown1.Value > 6)
+            //{
+            //    numericUpDown1.Value = 6;
+            //}
               
         }
     }

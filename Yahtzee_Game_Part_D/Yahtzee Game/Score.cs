@@ -1,4 +1,4 @@
-﻿    using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +9,7 @@ namespace Yahtzee_Game {
 	abstract class Score {
 		private int points;
 		private Label label;
-		protected bool done;
+        protected bool done = true;
         private ScoreType scoretype;
 
 		public Score(Label labelName) {

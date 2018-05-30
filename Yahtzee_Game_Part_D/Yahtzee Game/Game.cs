@@ -26,12 +26,15 @@ namespace Yahtzee_Game
         private const int DEFAULT_FINISH = 0;
         private const int DEFAULT_INCREMENT = 1;
         private const int DEFAULT_NUM_ROLL = 1;
+        private const int DEFAULT_FIRST_PLAYER = 0;
+        private const string DEFAULT_NUM_DIE = "0";
         private BindingList<Player> players;
         private Player currentPlayer;
         private Die[] dice;
         private int currentPlayerIndex;
         private int playersFinished;
         private int numRolls;
+        private int[] diceNum = new int[NUM_OF_DICE];
         private Form1 form;
         private Label[] dieLabels;
         private Label[] scoreLabels;
@@ -42,13 +45,16 @@ namespace Yahtzee_Game
         {
             this.form = formOneObj;
             currentPlayerIndex = DEFAULT_INDEX;
-            players = new BindingList<Player>();
             playersFinished = DEFAULT_FINISH;
             scoreLabels = form.GetScoreLabels();
+            players = new BindingList<Player>() { 
+                new Player("Player 1", scoreLabels)
+        };
             dice = new Die[NUM_OF_DICE];
             initialize();
             numRolls = DEFAULT_NUM_ROLL;
             form.playerBindingSource.DataSource = players;
+            currentPlayer = Players[currentPlayerIndex];
 
         }
         public BindingList<Player> Players
@@ -92,6 +98,12 @@ namespace Yahtzee_Game
             //Later we might need to enable or disable some buttons or labels
             numRolls = DEFAULT_NUM_ROLL;
             form.rollDice_button.Enabled = true;
+            foreach(Label die in dieLabels)
+            {
+                die.Text = "";
+            }
+            form.EnableRollButton();
+    
         }
         public void RollDice()
         {
@@ -136,8 +148,14 @@ Your turn has ended - click OK";
         }
         public void ScoreCombination(ScoreType scoretype)
         {
-            form.ShowOkButton();
+            for (int i = 0; i < NUM_OF_DICE; i++)
+            {
+                diceNum[i] = dice[i].FaceValue;
+            }
 
+            currentPlayer.ScoreCombination(scoretype, diceNum);
+            currentPlayer.ShowScores();
+            form.ShowOkButton();
         }
         public static Game Load(Form1 form)
         {

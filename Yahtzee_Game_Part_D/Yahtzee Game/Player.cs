@@ -72,6 +72,8 @@ namespace Yahtzee_Game {
 		public void ScoreCombination(ScoreType scoretype, int[] integers) {
             combination = (Combination)scores[(int)scoretype];
             combination.CalculateScore(integers);
+            GrandTotal = combination.Points;
+            //combination.ShowScore();
         }
 
 		public int GrandTotal {
@@ -80,7 +82,7 @@ namespace Yahtzee_Game {
 			}
             set
             {
-                grandTotal = value;
+                grandTotal += value;
             }
 		}
 
@@ -89,10 +91,9 @@ namespace Yahtzee_Game {
 		}
 
 		public void ShowScores() {
-            foreach(Score score in scores)
-            {
-                score.ShowScore();
-            }
+           combination.ShowScore();
+            
+            
 		}
 
 		public bool IsFinished() {

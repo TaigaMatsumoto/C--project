@@ -45,3 +45,4 @@ H:\assignment_ITD121\Yahtzee_Game_Part_D\Yahtzee Game\obj\Debug\Yahtzee_Game.Pro
 H:\assignment_ITD121\Yahtzee_Game_Part_D\Yahtzee Game\obj\Debug\Yahtzee Game.csproj.GenerateResource.Cache
 H:\assignment_ITD121\Yahtzee_Game_Part_D\Yahtzee Game\bin\Debug\Yahtzee Game.exe
 H:\assignment_ITD121\Yahtzee_Game_Part_D\Yahtzee Game\bin\Debug\Yahtzee Game.pdb
+H:\assignment_ITD121\Yahtzee_Game_Part_D\Yahtzee Game\obj\Debug\Yahtzee Game.csproj.CoreCompileInputs.cache
