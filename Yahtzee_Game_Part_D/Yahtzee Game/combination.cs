@@ -11,7 +11,7 @@ namespace Yahtzee_Game
     {
         public Combination(Label label): base (label)
         {
-
+                
         }
 
         public abstract void CalculateScore(int[] scores);

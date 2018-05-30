@@ -15,16 +15,16 @@ namespace Yahtzee_Game
 		const int NUM_DICES = 5;
 		const int NUM_BUTTONS = 13;
 		const int SCOREBUTTON_ARRAY_ELEMENTS = NUM_BUTTONS + 3;
-		const int NUM_LABEL_FOR_SCORETOTALS = 19;
-
-		string a = "a";
+		const int NUM_OF_LABEL_FOR_SCORETOTALS = 19;
+        const decimal DEFAULT_VALUE = 0;
+        private string playerName = "Player";
 
 		private Label[] dice;
 		private Button[] scoreButtons;
 		private Label[] scoreTotals;
 		private CheckBox[] checkBoxes;
 		private Game game;
-
+        private decimal currentValue = DEFAULT_VALUE;
         public Form1()
 		{
 			InitializeComponent();
@@ -37,11 +37,11 @@ namespace Yahtzee_Game
 			dice = new Label[NUM_DICES] { die1, die2, die3, die4, die5 };
 			scoreButtons = new Button[SCOREBUTTON_ARRAY_ELEMENTS] { Ones, Twos, Threes, Fours, Fives, Sixes, null, null, null,
 																	ThreeOfAKind, FourOfAKind, FullHouse, SmallStraight,LargeStraight,Chance, Yahtzee};
-			scoreTotals = new Label[NUM_LABEL_FOR_SCORETOTALS] { scoreLabel1 , scoreLabel2, scoreLabel3, scoreLabel4, scoreLabel5, scoreLabel6,
+			scoreTotals = new Label[NUM_OF_LABEL_FOR_SCORETOTALS] { scoreLabel1 , scoreLabel2, scoreLabel3, scoreLabel4, scoreLabel5, scoreLabel6,
 																subTotalLabel, bonusLabel, upperLabel, threeOfAKindLabel, fourOfAKindLabel, fullHouseLabel,
 																smlStraightLabel, largeStraightLabel, chanceLabel, yahtzeeLabel, yahtzeeBonusLabel, lowerTotalLabel, grandTotalLabel};
 			checkBoxes = new CheckBox[5] { roll_checkBox1, roll_checkBox2, roll_checkBox3, roll_checkBox4, roll_checkBox5 };
-            scoreTotals[1] = new Label();
+            
             
 		}
 		public Label[] GetDice()
@@ -128,11 +128,8 @@ namespace Yahtzee_Game
         private void rollDice_button_Click(object sender, EventArgs e)
         {
             game.RollDice();
-            foreach(CheckBox checkbox in checkBoxes)
-            {
-                checkbox.Enabled = true;
-            }
-            foreach(Button button in scoreButtons)
+            EnableCheckBoxes();
+            foreach (Button button in scoreButtons)
             {
                 if(button != null)
                 {
@@ -175,6 +172,26 @@ namespace Yahtzee_Game
         private void ok_Button_Click(object sender, EventArgs e)
         {
             game.NextTurn();
+        }
+
+        private void UpdatePlayersDataGridView()
+        {
+            game.Players.ResetBindings();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            if(numericUpDown1.Value > currentValue)
+            {
+                game.Players.Add(new Player(playerName + numericUpDown1.Value.ToString(), scoreTotals));
+                currentValue = numericUpDown1.Value;
+            }
+            else
+            {
+                game.Players.RemoveAt(Decimal.ToInt32(numericUpDown1.Value));
+                currentValue = numericUpDown1.Value;
+            }
+              
         }
     }
 

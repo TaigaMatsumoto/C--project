@@ -6,16 +6,23 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Yahtzee_Game {
-	class Score {
+	abstract class Score {
 		private int points;
 		private Label label;
 		protected bool done;
+        private ScoreType scoretype;
 
 		public Score(Label labelName) {
 			label = labelName;
 		}
-         
-		public int Points {
+        public ScoreType Scoretype
+        {
+            get
+            {
+                return scoretype;
+            }
+        }
+        public int Points {
 			get {
 				return points;
 			}
@@ -25,7 +32,9 @@ namespace Yahtzee_Game {
 
 		}
 
-		public bool Done {
+        //public abstract void CalculateScore(int[] scores);
+
+        public bool Done {
 			get {
 				return done;
 			}

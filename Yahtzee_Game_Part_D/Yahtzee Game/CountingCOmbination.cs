@@ -11,9 +11,10 @@ namespace Yahtzee_Game
     {
         const int DEFAULT_NUM_FOR_ARRAY = 0;
         private int dieValue;
-
+        private ScoreType scoretype;
         public CountingCombination(ScoreType scoretype, Label score):base(score)
         {
+            this.scoretype = scoretype;
             switch (scoretype)
             {
                 case ScoreType.Ones:
@@ -31,9 +32,14 @@ namespace Yahtzee_Game
                 case ScoreType.Fives:
                     dieValue = 5;
                     break;
+                case ScoreType.Sixes:
+                    dieValue = 6;
+                    break;
 
             }
         }
+
+       
 
         public override void CalculateScore(int[] dieNums)
         {
@@ -47,6 +53,8 @@ namespace Yahtzee_Game
             }
 
             dieValue *= numInArray;
+
+            Points = dieValue;
 
             
             //Define the each calculation of combinations

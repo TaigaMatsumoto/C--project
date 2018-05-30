@@ -10,7 +10,13 @@ namespace Yahtzee_Game
     class FixedScore:Combination
     {
         ScoreType scoretype;
-        private List<bool> test1;
+        const int POINT_FOR_SML_STRAIGHT = 30;
+        const int POINT_FOR_LAR_STRAIGHT = 40;
+        const int POINT_FOR_FULLHOUSE = 25;
+        const int POINT_FOR_YAHTZEE = 30;
+        private List<bool> checkerForSmlLarStraight;
+        private List<bool> checkerForFullHouse;
+
         public FixedScore(ScoreType scoretype, Label score) : base(score)
         {
             this.scoretype = scoretype;
@@ -19,23 +25,74 @@ namespace Yahtzee_Game
         
         public override void CalculateScore(int[] nums)
         {
-            test1 = new List<bool>();
+            checkerForSmlLarStraight = new List<bool>();
             Sort(nums);
-            for(int i = 0; i < nums.Length; i++)
-            {
-                if(nums[i] == nums[i+1] + 1)
-                {
-                    test1.Add(true);
-                }
-            }
-            if (test1.Count >= 3)
-            {
-                if(test1.Count == 4)
-                {
 
+            //Check whether small straight or large straight
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] == nums[i + 1] + 1)
+                {
+                    checkerForSmlLarStraight.Add(true);
                 }
             }
-            
+
+            //Small straight
+            if (scoretype == ScoreType.SmallStraight)
+            {
+                if(checkerForSmlLarStraight.Count == 3)
+                {
+                    Points = POINT_FOR_SML_STRAIGHT;
+                }
+            }
+
+            //Large straight
+            else if (scoretype == ScoreType.LargeStraight)
+            {
+                if(checkerForSmlLarStraight.Count == 4)
+                {
+                    Points = POINT_FOR_LAR_STRAIGHT;
+                }
+            }
+
+            //Full House 
+            else if(scoretype == ScoreType.FullHouse)
+            {
+                
+                if (nums[0] == nums[1] || nums[0] == nums[2])
+                {
+                    if(nums[3] == nums[4])
+                    {
+                        Points = POINT_FOR_FULLHOUSE;
+                    }
+                }
+                else if (nums[0] == nums[1])
+                {
+                    if (nums[2] == nums[3] || nums[2] == nums[4])
+                    {
+                        Points = POINT_FOR_FULLHOUSE;
+                    }
+                }
+            }
+
+            //Yahtzee
+            else if(scoretype == ScoreType.Yahtzee)
+            {
+                int yahtzeeNum = nums[0];
+                bool yahtzeeCombo = true;
+
+                for(int i = 1; i < nums.Length; i++)
+                {
+                    if(nums[i] != yahtzeeNum)
+                    {
+                        yahtzeeCombo = false;
+                    }
+                }
+                if (yahtzeeCombo)
+                {
+                    Points = POINT_FOR_YAHTZEE;
+                }
+            }
             //algorithem will be here soon...
         }
 

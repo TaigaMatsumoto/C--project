@@ -40,16 +40,15 @@ namespace Yahtzee_Game
 
         public Game(Form1 formOneObj)
         {
+            this.form = formOneObj;
             currentPlayerIndex = DEFAULT_INDEX;
             players = new BindingList<Player>();
             playersFinished = DEFAULT_FINISH;
-            scoreLabels = new Label[NUM_OF_PLAYERS];
+            scoreLabels = form.GetScoreLabels();
             dice = new Die[NUM_OF_DICE];
-            this.form = formOneObj;
             initialize();
-            currentPlayer = players[currentPlayerIndex];
             numRolls = DEFAULT_NUM_ROLL;
-            form.playerBindingSource.DataSource = Players;
+            form.playerBindingSource.DataSource = players;
 
         }
         public BindingList<Player> Players
@@ -68,10 +67,10 @@ namespace Yahtzee_Game
                 dice[i] = new Die(dieLabels[i]);
             }
 
-            for (int i = 0; i < testNames.Length; i++)
-            {
-                players.Add(new Player(testNames[i], scoreLabels));
-            }
+            //for (int i = 0; i < testNames.Length; i++)
+            //{
+            //    players.Add(new Player(testNames[i], scoreLabels));
+            //}
         }
        
         public void NextTurn()
@@ -138,6 +137,7 @@ Your turn has ended - click OK";
         public void ScoreCombination(ScoreType scoretype)
         {
             form.ShowOkButton();
+
         }
         public static Game Load(Form1 form)
         {
