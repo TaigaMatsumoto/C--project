@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace Yahtzee_Game
 {
+    [Serializable]
     class FixedScore:Combination
     {
         ScoreType scoretype;
@@ -27,47 +28,43 @@ namespace Yahtzee_Game
         {
             checkerForSmlLarStraight = new List<bool>();
             Sort(nums);
+            //Check whether small straight or large straight
 
+            for (int i = 0; i < nums.Length - 1; i++)
+            {
+                if (nums[i] + 1 == nums[i + 1])
+                {
+                    checkerForSmlLarStraight.Add(true);
+                }
+            }
             switch (scoretype)
             {
                 case ScoreType.SmallStraight:
-                    //Check whether small straight or large straight
-                    for (int i = 0; i < nums.Length - 1; i++)
-                    {
-                        if (nums[i] == nums[i + 1])
-                        {
-                            checkerForSmlLarStraight.Add(true);
-                        }
-                    }
-
                     //Small straight
-                    if (scoretype == ScoreType.SmallStraight)
+                    if (checkerForSmlLarStraight.Count >= 3)
                     {
-                        if (checkerForSmlLarStraight.Count == 3)
-                        {
-                            Points = POINT_FOR_SML_STRAIGHT;
-                        }
+                        Points = POINT_FOR_SML_STRAIGHT;
+                        done = true;
                     }
-
-                    //Large straight
-                    else if (scoretype == ScoreType.LargeStraight)
+                    break;
+                case ScoreType.LargeStraight:
+                    if (checkerForSmlLarStraight.Count == 4)
                     {
-                        if (checkerForSmlLarStraight.Count == 4)
-                        {
-                            Points = POINT_FOR_LAR_STRAIGHT;
-                        }
+                        Points = POINT_FOR_LAR_STRAIGHT;
+                        done = true;
                     }
                     break;
                 case ScoreType.FullHouse:
                     if (nums[0] == nums[1] && nums[0] == nums[2])
                     {
-                        if (nums[0] == nums[4])
+                        if (nums[0] == nums[3])
                         {
                             Points = 0;
                         }
                         else if (nums[3] == nums[4])
                         {
                             Points = POINT_FOR_FULLHOUSE;
+                            done = true;
                         }
                         else
                         {
@@ -82,6 +79,7 @@ namespace Yahtzee_Game
                         } else if (nums[2] == nums[3] && nums[2] == nums[4])
                         {
                             Points = POINT_FOR_FULLHOUSE;
+                            done = true;
                         }
                         else
                         {

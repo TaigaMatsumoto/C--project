@@ -44,17 +44,21 @@ namespace Yahtzee_Game
             
             
 		}
+        public Button[] ScoreButtons()
+        {
+            return scoreButtons;
+        }
 		public Label[] GetDice()
 		{
 			return dice;
 		}
 
-		public Label[] GetScoreLabels()
+		public Label[] GetScoresTotals()
 		{
 			return scoreTotals;
 		}
 
-		public void showPlayerName(string name)
+		public void ShowPlayerName(string name)
 		{
             playerName_label.Text = name;
 
@@ -110,6 +114,11 @@ namespace Yahtzee_Game
             ok_Button.Visible = true;
 
         }
+        public void HideOkButton()
+        {
+            ok_Button.Enabled = false;
+            ok_Button.Visible = false;
+        }
 		public void StartNewGame()
 		{
 			game = new Game(this);
@@ -130,13 +139,7 @@ namespace Yahtzee_Game
             numericUpDown1.Enabled = false;
             game.RollDice();
             EnableCheckBoxes();
-            foreach (Button button in scoreButtons)
-            {
-                if(button != null)
-                {
-                    button.Enabled = true;
-                }
-            }
+            
         }
 
         private void roll_checkBoxes_checkedChanged(object sender, EventArgs e)
@@ -177,14 +180,14 @@ namespace Yahtzee_Game
             game.NextTurn();
             this.playerGrid.EndEdit();
             this.playerGrid.Refresh();
-
-           
+            DisableAndClearCheckBoxes();
+            HideOkButton();
         }
 
-        //private void UpdatePlayersDataGridView()
-        //{
-        //    game.Players.ResetBindings();
-        //}
+        private void UpdatePlayersDataGridView()
+        {
+            game.Players.ResetBindings();
+        }   
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
@@ -198,18 +201,20 @@ namespace Yahtzee_Game
                 game.Players.RemoveAt(Decimal.ToInt32(numericUpDown1.Value));
                 currentValue = numericUpDown1.Value;
             }
-            //if(numericUpDown1.Value < 1)
-            //{
-            //    numericUpDown1.Value = 1;
-            //}
-            //if (numericUpDown1.Value > 6)
-            //{
-            //    numericUpDown1.Value = 6;
-            //}
-              
+             
         }
 
-        
+        private void load_menuItem_Click(object sender, EventArgs e)
+        {
+            game = Game.Load(this);
+            playerBindingSource.DataSource = game.Players;
+            UpdatePlayersDataGridView();
+        }
+
+        private void save_menuItem_Click(object sender, EventArgs e)
+        {
+            game.Save();
+        }
     }
 
 }

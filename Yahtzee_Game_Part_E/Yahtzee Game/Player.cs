@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Yahtzee_Game {
-	public class Player {
+    [Serializable]
+    public class Player {
+        private const int BONUS_FOR_63 = 35;
         private string name;
 		private int combinationsToDO;
 		private Score[] scores;
@@ -15,6 +17,8 @@ namespace Yahtzee_Game {
         private ScoreType[] scoretype = (ScoreType[])Enum.GetValues(typeof(ScoreType));
         private Form1 form = new Form1();
         private Label[] scoreTotals;
+        
+      
         public Player(string playerName, Label[] scoreTotals) {
 			name = playerName;
             this.scoreTotals = scoreTotals;
@@ -68,28 +72,23 @@ namespace Yahtzee_Game {
             }
 		}
 
-        //I have no idea
 		public void ScoreCombination(ScoreType scoretype, int[] integers) {
             combination = (Combination)scores[(int)scoretype];
             combination.CalculateScore(integers);
             GrandTotal = combination.Points;
-            if((int)scoretype < (int)ScoreType.Sixes)
+            if((int)scoretype <= (int)ScoreType.Sixes)
             {
-                scores[(int)ScoreType.SectionATotal].Points = combination.Points;
-                scores[(int)ScoreType.SectionATotal].ShowScore();
-                scores[(int)ScoreType.GrandTotal].Points = scores[(int)ScoreType.SectionATotal].Points;
-                scores[(int)ScoreType.GrandTotal].ShowScore();
+                scores[(int)ScoreType.SectionATotal].Points = combination.Points; 
+                scores[(int)ScoreType.GrandTotal].Points = combination.Points;
+                if(scores[(int)ScoreType.SectionATotal].Points >= 65)
+                {
+                    scores[(int)ScoreType.BonusFor63Plus].Points = BONUS_FOR_63;
+                }
             }
             else if((int)scoretype > (int)ScoreType.Sixes)
             {
-                //if(scoretype == ScoreType.Yahtzee)
-                //{
-                    
-                //}
                 scores[(int)ScoreType.SectionBTotal].Points = combination.Points;
-                scores[(int)ScoreType.SectionBTotal].ShowScore();
-                scores[(int)ScoreType.GrandTotal].Points = scores[(int)ScoreType.SectionBTotal].Points;
-                scores[(int)ScoreType.GrandTotal].ShowScore();
+                scores[(int)ScoreType.GrandTotal].Points = combination.Points;
             }
             //if(scores[(int)ScoreType.SubTotal].Points >= 63)
             //{
@@ -97,6 +96,10 @@ namespace Yahtzee_Game {
             //    scores[(int)ScoreType.BonusFor63Plus].ShowScore();
             //}
             //combination.ShowScore();
+            if(scoretype != ScoreType.Yahtzee)
+            {
+
+            }
         }
 
 		public int GrandTotal {
@@ -110,11 +113,26 @@ namespace Yahtzee_Game {
 		}
 
 		public bool IsAvailable(ScoreType scoretype) {
-			return true;
+			if(scores[(int)scoretype].Done == true)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
 		}
 
 		public void ShowScores() {
            combination.ShowScore();
+            if (combination.Points > 0)
+            {
+                scores[(int)ScoreType.SectionATotal].ShowScore();
+                scores[(int)ScoreType.BonusFor63Plus].ShowScore();
+                scores[(int)ScoreType.GrandTotal].ShowScore();
+                scores[(int)ScoreType.SectionBTotal].ShowScore();
+                scores[(int)ScoreType.GrandTotal].ShowScore();
+            }
 		}
 
 		public bool IsFinished() {
@@ -125,8 +143,13 @@ namespace Yahtzee_Game {
 			}
 		}
 
-		//public Label[] Load(){
-			
-		//}
-	}
+        public void Load(Label[] scoreTotals)
+        {
+            for (int i = 0; i < scores.Length; i++)
+            {
+                scores[i].Load(scoreTotals[i]);
+            }
+        }//end Load
+
+    }
 }

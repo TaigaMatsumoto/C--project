@@ -9,7 +9,7 @@ namespace Yahtzee_Game {
 	abstract class Score {
 		private int points;
 		private Label label;
-        protected bool done = true;
+        protected bool done = false;
        
 
 		public Score(Label labelName) {
@@ -35,13 +35,15 @@ namespace Yahtzee_Game {
 		}
 
 		public void ShowScore() {
-			if (done) {
+			if (points != 0) {
 				label.Text = points.ToString();
 			}
 		}
 
-		public void Load(Label label) {
+        public void Load(Label label)
+        {
+            this.label = label;
+        } //end Load
 
-		}
-	}
+    }
 }

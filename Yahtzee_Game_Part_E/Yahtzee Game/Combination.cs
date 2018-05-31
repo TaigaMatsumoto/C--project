@@ -7,6 +7,7 @@ using System.Windows.Forms;
 
 namespace Yahtzee_Game
 {
+    [Serializable]
     abstract class Combination:Score
     {
         public Combination(Label label): base (label)

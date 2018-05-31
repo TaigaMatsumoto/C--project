@@ -208,8 +208,6 @@ namespace Yahtzee_Game
             //}
               
         }
-
-        
     }
 
 }
